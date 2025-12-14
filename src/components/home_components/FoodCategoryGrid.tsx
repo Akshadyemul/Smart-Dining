@@ -42,13 +42,16 @@ function FoodCategoryGrid() {
         <IoIosArrowForward />
       </div>
 
-      <div className="w-full py-8 bg-white">
-        <div className="flex justify-center gap-12 flex-wrap">
+      <div className="w-full py-8">
+        <div className="overflow-x-auto scroll-smooth flex md:justify-center md:gap-12 md:flex-wrap">
           {categories.map((c, i) => (
-            <FoodCategoryCard key={i} {...c} />
+            <div key={i} className="min-w-[130px]">
+              <FoodCategoryCard key={i} {...c} />
+            </div>
           ))}
         </div>
       </div>
+
     </div>
   );
 }

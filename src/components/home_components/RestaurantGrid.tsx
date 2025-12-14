@@ -48,9 +48,11 @@ function RestaurantGrid() {
           <h3 className="font-semibold text-2xl">Restaurants near you</h3>
           <IoIosArrowForward />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="overflow-x-auto scroll-smooth grid sm:grid-cols-2 md:flex md:flex-row md:gap-6 xl:grid xl:grid-cols-4 gap-6">
           {restaurants.map((r, i) => (
-            <RestaurantCard key={i} {...r} />
+            <div key={i} className="md:min-w-[260px]">
+              <RestaurantCard {...r} />
+            </div>
           ))}
         </div>
       </div>
@@ -62,9 +64,11 @@ function RestaurantGrid() {
           </h3>
           <IoIosArrowForward />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="overflow-x-auto scroll-smooth grid sm:grid-cols-2 md:flex md:flex-row md:gap-6 xl:grid xl:grid-cols-4 gap-6">
           {restaurants.map((r, i) => (
-            <RestaurantCard key={i} {...r} />
+            <div key={i} className="md:min-w-[260px]">
+              <RestaurantCard key={i} {...r} />
+            </div>
           ))}
         </div>
       </div>

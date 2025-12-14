@@ -9,7 +9,7 @@ function FoodCategoryCard({ image, name }: FoodCategoryCardProps) {
       <img
         src={image}
         alt={name}
-        className="w-24 h-24 object-cover rounded-full shadow-sm hover:scale-105 transition"
+        className="w-30 h-30 object-cover rounded-full shadow-sm hover:scale-105 transition"
       />
       <p className="mt-2 text-gray-700 font-medium text-lg">{name}</p>
     </div>
