@@ -1,13 +1,14 @@
-import NavBar from './components/NavBar'
-import Homepage from './pages/Homepage'
+// import { BrowserRouter } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import Homepage from "./pages/Homepage";
 
 function App() {
   return (
     <>
-      <NavBar />
-      <Homepage />
+        <NavBar />
+        <Homepage />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

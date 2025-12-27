@@ -36,16 +36,16 @@ function FoodCategoryGrid() {
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-4">
       <div className="flex text-2xl font-semibold gap-2 items-center">
         <h3>What's on your mind?</h3>
         <IoIosArrowForward />
       </div>
 
-      <div className="w-full py-8">
-        <div className="overflow-x-auto scroll-smooth flex md:justify-center md:gap-12 md:flex-wrap">
+      <div className="w-full py-4">
+        <div className="overflow-x-auto scroll-smooth flex md:justify-center md:gap-6 md:flex-wrap">
           {categories.map((c, i) => (
-            <div key={i} className="min-w-[130px]">
+            <div key={i} className="min-w-32">
               <FoodCategoryCard key={i} {...c} />
             </div>
           ))}
