@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GoHome, GoSearch} from "react-icons/go";
 import { BiQrScan } from "react-icons/bi";
 import { IoFastFoodOutline } from "react-icons/io5";
+import { NavLink } from "react-router-dom";
 
 function NavBar() {
   const [search, setSearch] = useState("");
@@ -30,20 +31,68 @@ function NavBar() {
 
           {/* Desktop Menu */}
           <ul className="hidden md:flex space-x-8 font-medium text-gray-700">
-            <li className="hover:text-emerald-600 cursor-pointer">Home</li>
-            <li className="hover:text-emerald-600 cursor-pointer">Scan QR</li>
-            <li className="hover:text-emerald-600 cursor-pointer">
-              Book Table
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  `hover:text-emerald-600 cursor-pointer ${isActive ? 'text-emerald-600' : 'text-gray-700'}`
+                }
+              >
+                Home
+              </NavLink>
             </li>
-            <li className="hover:text-emerald-600 cursor-pointer">Orders</li>
-            <li className="hover:text-emerald-600 cursor-pointer">Help</li>
+            <li>
+              <NavLink
+                to="/scan"
+                className={({ isActive }) =>
+                  `hover:text-emerald-600 cursor-pointer ${isActive ? 'text-emerald-600' : 'text-gray-700'}`
+                }
+              >
+                Scan QR
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/book"
+                className={({ isActive }) =>
+                  `hover:text-emerald-600 cursor-pointer ${isActive ? 'text-emerald-600' : 'text-gray-700'}`
+                }
+              >
+                Book Table
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/orders"
+                className={({ isActive }) =>
+                  `hover:text-emerald-600 cursor-pointer ${isActive ? 'text-emerald-600' : 'text-gray-700'}`
+                }
+              >
+                Orders
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/help"
+                className={({ isActive }) =>
+                  `hover:text-emerald-600 cursor-pointer ${isActive ? 'text-emerald-600' : 'text-gray-700'}`
+                }
+              >
+                Help
+              </NavLink>
+            </li>
           </ul>
 
           {/* Right actions */}
           <div className="flex items-center gap-6">
-            <button className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg">
+            <NavLink
+              to="/signin"
+              className={({ isActive }) =>
+                `px-4 py-2 rounded-lg ${isActive ? 'bg-emerald-700 text-white' : 'bg-emerald-600 hover:bg-emerald-700 text-white'}`
+              }
+            >
               Sign In
-            </button>
+            </NavLink>
           </div>
         </div>
       </nav>
@@ -51,24 +100,52 @@ function NavBar() {
       {/* ================= MOBILE BOTTOM NAV ================= */}
       <div className="md:hidden fixed bottom-0 left-0 w-full bg-gray-100 shadow-lg">
         <ul className="flex justify-around py-2 text-sm font-medium text-gray-600">
-          <li className="flex flex-col items-center gap-1 text-emerald-600">
-            <GoHome size={26} />
-            Home
+          <li>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `flex flex-col items-center gap-1 ${isActive ? 'text-emerald-600' : 'text-gray-600'}`
+              }
+            >
+              <GoHome size={26} />
+              Home
+            </NavLink>
           </li>
 
-          <li className="flex flex-col items-center gap-1">
-            <BiQrScan size={26} />
-            Scan
+          <li>
+            <NavLink
+              to="/scan"
+              className={({ isActive }) =>
+                `flex flex-col items-center gap-1 ${isActive ? 'text-emerald-600' : 'text-gray-600'}`
+              }
+            >
+              <BiQrScan size={26} />
+              Scan
+            </NavLink>
           </li>
 
-          <li className="flex flex-col items-center gap-1">
-            <GoSearch size={26} />
-            Search
+          <li>
+            <NavLink
+              to="/search"
+              className={({ isActive }) =>
+                `flex flex-col items-center gap-1 ${isActive ? 'text-emerald-600' : 'text-gray-600'}`
+              }
+            >
+              <GoSearch size={26} />
+              Search
+            </NavLink>
           </li>
 
-          <li className="flex flex-col items-center gap-1">
-            <IoFastFoodOutline size={26} />
-            Orders
+          <li>
+            <NavLink
+              to="/orders"
+              className={({ isActive }) =>
+                `flex flex-col items-center gap-1 ${isActive ? 'text-emerald-600' : 'text-gray-600'}`
+              }
+            >
+              <IoFastFoodOutline size={26} />
+              Orders
+            </NavLink>
           </li>
         </ul>
       </div>

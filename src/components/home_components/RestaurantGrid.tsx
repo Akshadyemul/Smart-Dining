@@ -60,7 +60,7 @@ function RestaurantGrid() {
         </div>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-6 pt-10">
         <div className="flex text-2xl gap-2 items-center font-semibold mb-3">
           <h3 className="font-semibold text-2xl">
             Top Restaurants in your city

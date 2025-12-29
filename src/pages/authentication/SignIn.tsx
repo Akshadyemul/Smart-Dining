@@ -5,9 +5,8 @@ function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-
+    <div className="flex justify-center items-center px-3 sm:px-4 ">
+      <div className="bg-white shadow-lg rounded-2xl p-6 sm:p-8 w-full mt-30 max-w-sm sm:max-w-md">
         {/* Logo */}
         <h1 className="text-3xl font-semibold text-emerald-600 text-center mb-2">
           Smart Dining
@@ -43,7 +42,11 @@ function SignIn() {
               className="absolute right-3 top-3 cursor-pointer text-gray-500"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? <AiOutlineEye size={20} /> : <AiOutlineEyeInvisible size={20} />}
+              {showPassword ? (
+                <AiOutlineEye size={20} />
+              ) : (
+                <AiOutlineEyeInvisible size={20} />
+              )}
             </div>
           </div>
         </div>
@@ -56,11 +59,13 @@ function SignIn() {
         {/* Extra Links */}
         <p className="text-center text-gray-500 text-sm mt-4">
           Don't have an account?{" "}
-          <a href="/signup" className="text-emerald-600 font-medium hover:underline">
+          <a
+            href="/signup"
+            className="text-emerald-600 font-medium hover:underline"
+          >
             Sign Up
           </a>
         </p>
-
       </div>
     </div>
   );
