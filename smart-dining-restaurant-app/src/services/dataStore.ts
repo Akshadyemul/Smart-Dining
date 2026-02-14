@@ -152,6 +152,20 @@ export const dataStore = {
     }
     return false;
   },
+  async addTable(table: Table): Promise<boolean> {
+    const profile = await this.getRestaurantProfile();
+    if (!profile) return false;
+    profile.tables.push(table);
+    await this.saveRestaurantProfile(profile);
+    return true;
+  },
+  async deleteTable(id: string): Promise<boolean> {
+    const profile = await this.getRestaurantProfile();
+    if (!profile) return false;
+    profile.tables = profile.tables.filter(t => t.id !== id);
+    await this.saveRestaurantProfile(profile);
+    return true;
+  },
   async updateMenuItem(item: MenuItem): Promise<boolean> {
     const profile = await this.getRestaurantProfile();
     if (!profile) return false;
