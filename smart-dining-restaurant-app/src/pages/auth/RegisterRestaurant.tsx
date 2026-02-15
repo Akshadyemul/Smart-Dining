@@ -11,7 +11,7 @@ import { dataStore } from '@/services/dataStore';
 import type { RestaurantProfile, MenuItem, Table } from '@/types';
 export default function RegisterRestaurant() {
     const navigate = useNavigate();
-    const { user, hasRestaurant, refreshRestaurantStatus, setHasRestaurant, isLoading: authLoading } = useAuth();
+    const { user, hasRestaurant, setHasRestaurant, isLoading: authLoading } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [step, setStep] = useState(1);
@@ -226,7 +226,7 @@ export default function RegisterRestaurant() {
                     <div className="flex justify-center mb-4">
                         <Store className="h-12 w-12 text-orange-500" />
                     </div>
-                    <CardTitle className="text-2xl font-bold">Resister Your Restaurant</CardTitle>
+                    <CardTitle className="text-2xl font-bold">Register Your Restaurant</CardTitle>
                     <CardDescription>Tell us about your dining establishment</CardDescription>
                 </CardHeader>
                 <CardContent>

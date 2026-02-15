@@ -1,6 +1,6 @@
 import express from 'express';
 import Restaurant from '../models/Restaurant.js';
-import User from '../models/User.js';
+import RestaurantOwner from '../models/RestaurantOwner.js';
 import mongoose from 'mongoose';
 const router = express.Router();
 
@@ -9,6 +9,44 @@ router.get('/', async (req, res) => {
     try {
         const restaurants = await Restaurant.find({}, { menu: 0, tables: 0 }); // Exclude menu/tables for list
         res.json(restaurants);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Get restaurant profile (with header auth)
+router.get('/profile', async (req, res) => {
+    try {
+        const userId = req.headers['x-user-id'];
+        console.log('GET /profile - Requesting userId:', userId);
+
+        if (!userId) {
+            console.log('GET /profile - No userId in headers');
+            return res.status(401).json({ message: 'User ID required' });
+        }
+
+        const restaurant = await Restaurant.findOne({ ownerId: userId });
+        console.log('GET /profile - Found restaurant:', restaurant ? restaurant._id : 'None');
+        if (restaurant) {
+            console.log('GET /profile - Tables count:', restaurant.tables ? restaurant.tables.length : 0);
+            console.log('GET /profile - Menu count:', restaurant.menu ? restaurant.menu.length : 0);
+        }
+
+        res.json(restaurant || null);
+    } catch (error) {
+        console.error('GET /profile - Error:', error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Get restaurant profile by user ID
+router.get('/profile/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        if (!userId) return res.status(401).json({ message: 'User ID required' });
+
+        const restaurant = await Restaurant.findOne({ ownerId: userId });
+        res.json(restaurant || null);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -25,45 +63,20 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Get restaurant profile by user ID
-router.get('/profile/:userId', async (req, res) => {
-    try {
-        const { userId } = req.params;
-        if (!userId) return res.status(401).json({ message: 'User ID required' });
-        
-        const restaurant = await Restaurant.findOne({ ownerId: userId });
-        res.json(restaurant || null);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-// Get restaurant profile (with header auth)
-router.get('/profile', async (req, res) => {
-    try {
-        const userId = req.headers['x-user-id'];
-        if (!userId) return res.status(401).json({ message: 'User ID required' });
-        const restaurant = await Restaurant.findOne({ ownerId: userId });
-        res.json(restaurant || null);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
 // Save/Update restaurant profile
 router.post('/profile', async (req, res) => {
     try {
         const userId = req.headers['x-user-id'];
         if (!userId) return res.status(401).json({ message: 'User ID required' });
-        
+
         // Get user details - handle both string IDs and ObjectIds
         let user;
         if (mongoose.Types.ObjectId.isValid(userId)) {
-            user = await User.findById(userId);
+            user = await RestaurantOwner.findById(userId);
         } else {
-            user = await User.findOne({ _id: userId });
+            user = await RestaurantOwner.findOne({ _id: userId });
         }
-        
+
         if (!user) return res.status(404).json({ message: 'User not found' });
 
         // Prepare restaurant data with owner information
@@ -76,10 +89,17 @@ router.post('/profile', async (req, res) => {
             photo: req.body.owner?.photo || ''
         };
 
+        console.log('Received profile save request for user:', userId);
+        console.log('Tables count:', req.body.tables ? req.body.tables.length : 0);
+        console.log('Menu count:', req.body.menu ? req.body.menu.length : 0);
+
         const profileData = {
             ...req.body,
             ownerId: userId,
             owner: ownerData,
+            // Explicitly set these to ensure they are captured
+            tables: req.body.tables || [],
+            menu: req.body.menu || [],
             registeredAt: new Date(),
             updatedAt: new Date()
         };
@@ -91,13 +111,11 @@ router.post('/profile', async (req, res) => {
             { new: true, upsert: true }
         );
 
-        // Update user to mark as restaurant owner
-        const updatedUser = await User.findByIdAndUpdate(
+        // Update owner to mark as restaurant owner
+        const updatedOwner = await RestaurantOwner.findByIdAndUpdate(
             userId,
             {
-                isRestaurantOwner: true,
                 restaurantId: restaurant._id,
-                role: 'owner',
                 updatedAt: new Date()
             },
             { new: true }

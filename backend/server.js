@@ -4,15 +4,28 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import restaurantRoutes from './routes/restaurantRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
+import restaurantOwnerRoutes from './routes/restaurantOwnerRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 dotenv.config();
 const app = express();
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-user-id']
+}));
 app.use(express.json({ limit: '50mb' }));
+
+// Request Logging
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url} - UserID: ${req.headers['x-user-id']}`);
+    next();
+});
+
 // Routes
 app.use('/api/restaurant', restaurantRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/restaurant-owners', restaurantOwnerRoutes);
 app.use('/api/users', userRoutes);
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/smart_dining';

@@ -28,7 +28,7 @@ const restaurantSchema = new mongoose.Schema({
     image: String,
     images: [String],
     // Owner Reference
-    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'RestaurantOwner' },
     // Owner Details (denormalized for quick access)
     owner: {
         userId: mongoose.Schema.Types.ObjectId,
