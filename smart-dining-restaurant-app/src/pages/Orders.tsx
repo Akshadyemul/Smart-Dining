@@ -135,7 +135,7 @@ export default function AdminOrders() {
           </Card>
           <Card>
             <CardContent className="p-4">
-              <p className="text-2xl font-bold text-green-600">${totalRevenue.toFixed(2)}</p>
+              <p className="text-2xl font-bold text-green-600">₹{totalRevenue.toFixed(2)}</p>
               <p className="text-sm text-gray-600">Total Revenue</p>
             </CardContent>
           </Card>

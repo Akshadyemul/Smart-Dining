@@ -9,7 +9,8 @@ import {
   Calendar,
   TrendingUp,
   DollarSign,
-  ArrowRight
+  ArrowRight,
+  IndianRupee
 } from 'lucide-react';
 import { dataStore } from '@/services/dataStore';
 import type { Order, Reservation, Table } from '@/types';
@@ -77,8 +78,8 @@ export default function AdminDashboard() {
     },
     {
       title: 'Today\'s Revenue',
-      value: `$${stats.todayRevenue.toFixed(2)}`,
-      icon: <DollarSign className="h-6 w-6 text-green-500" />,
+      value: `₹${stats.todayRevenue.toFixed(2)}`,
+      icon: <IndianRupee className="h-6 w-6 text-green-500" />,
       link: '/orders'
     },
     {
