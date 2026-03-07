@@ -23,6 +23,19 @@ api.interceptors.request.use((config) => {
   return config;
 });
 export const dataStore = {
+  normalizeOwner(user: User): User {
+    if (!user) return user;
+    const restaurantRef = user.restaurantId as unknown;
+    const normalizedRestaurantId =
+      restaurantRef && typeof restaurantRef === 'object'
+        ? (restaurantRef as { _id?: string; id?: string })._id || (restaurantRef as { _id?: string; id?: string }).id
+        : user.restaurantId;
+
+    return {
+      ...user,
+      restaurantId: normalizedRestaurantId,
+    };
+  },
   // Restaurant Profile
   async getRestaurantProfile(): Promise<RestaurantProfile | null> {
     try {
@@ -30,6 +43,15 @@ export const dataStore = {
       return response.data;
     } catch (error) {
       console.error('Error fetching restaurant profile:', error);
+      return null;
+    }
+  },
+  async getRestaurantProfileByUserId(userId: string): Promise<RestaurantProfile | null> {
+    try {
+      const response = await api.get(`/restaurant/profile/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching restaurant profile by user ID:', error);
       return null;
     }
   },
@@ -103,7 +125,7 @@ export const dataStore = {
   async login(email: string, password: string): Promise<User | null> {
     try {
       const response = await api.post('/restaurant-owners/login', { email, password });
-      return response.data;
+      return this.normalizeOwner(response.data);
     } catch (error) {
       return null;
     }
@@ -111,7 +133,7 @@ export const dataStore = {
   async register(user: User): Promise<User | null> {
     try {
       const response = await api.post('/restaurant-owners/register', user);
-      return response.data;
+      return this.normalizeOwner(response.data);
     } catch (error) {
       return null;
     }

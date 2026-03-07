@@ -4,6 +4,13 @@ import RestaurantOwner from '../models/RestaurantOwner.js';
 import mongoose from 'mongoose';
 const router = express.Router();
 
+const ownerLookupFilter = (userId) => ({
+    $or: [
+        { ownerId: userId },
+        { 'owner.userId': userId }
+    ]
+});
+
 // Get all restaurants (public)
 router.get('/', async (req, res) => {
     try {
@@ -25,7 +32,7 @@ router.get('/profile', async (req, res) => {
             return res.status(401).json({ message: 'User ID required' });
         }
 
-        const restaurant = await Restaurant.findOne({ ownerId: userId });
+        const restaurant = await Restaurant.findOne(ownerLookupFilter(userId));
         console.log('GET /profile - Found restaurant:', restaurant ? restaurant._id : 'None');
         if (restaurant) {
             console.log('GET /profile - Tables count:', restaurant.tables ? restaurant.tables.length : 0);
@@ -45,7 +52,7 @@ router.get('/profile/:userId', async (req, res) => {
         const { userId } = req.params;
         if (!userId) return res.status(401).json({ message: 'User ID required' });
 
-        const restaurant = await Restaurant.findOne({ ownerId: userId });
+        const restaurant = await Restaurant.findOne(ownerLookupFilter(userId));
         res.json(restaurant || null);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -106,7 +113,7 @@ router.post('/profile', async (req, res) => {
 
         // Save/Update restaurant - store user details in the restaurant document
         const restaurant = await Restaurant.findOneAndUpdate(
-            { ownerId: userId },
+            ownerLookupFilter(userId),
             profileData,
             { new: true, upsert: true }
         );

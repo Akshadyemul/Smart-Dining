@@ -12,17 +12,17 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated, hasRestaurant } = useAuth();
+  const { login, isAuthenticated, hasRestaurant, isLoading: authLoading, restaurantStatusResolved } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isAuthenticated) {
+    if (!authLoading && isAuthenticated && restaurantStatusResolved) {
       if (hasRestaurant) {
         navigate('/dashboard', { replace: true });
       } else {
         navigate('/register-restaurant', { replace: true });
       }
     }
-  }, [isAuthenticated, hasRestaurant, navigate]);
+  }, [authLoading, isAuthenticated, hasRestaurant, restaurantStatusResolved, navigate]);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
