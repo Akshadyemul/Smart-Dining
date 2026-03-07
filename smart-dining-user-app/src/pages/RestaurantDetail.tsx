@@ -194,7 +194,7 @@ export default function RestaurantDetail() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <Tabs defaultValue="menu" className="w-full">
-                    <TabsList className="grid w-full grid-cols-2 mb-8 bg-gray-100 p-1">
+                    <TabsList className="grid w-full grid-cols-2 mb-8 h-18 bg-gray-200 rounded-xl border-none">
                         <TabsTrigger value="menu" className="py-3 font-bold">Menu</TabsTrigger>
                         <TabsTrigger id="booking-tab" value="booking" className="py-3 font-bold text-orange-600">Book a Table</TabsTrigger>
                     </TabsList>
@@ -229,7 +229,7 @@ export default function RestaurantDetail() {
                                     <CardContent className="p-4">
                                         <div className="flex justify-between items-start mb-1">
                                             <h3 className="font-bold text-gray-900">{item.name}</h3>
-                                            <span className="text-orange-600 font-bold">${item.price.toFixed(2)}</span>
+                                            <span className="text-orange-600 font-bold">₹{item.price.toFixed(2)}</span>
                                         </div>
                                         <p className="text-gray-500 text-xs mb-4 h-8 line-clamp-2">{item.description}</p>
                                         <div className="flex items-center justify-between">

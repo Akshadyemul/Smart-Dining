@@ -132,7 +132,7 @@ export default function Menu() {
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold">{item.name}</h3>
                   <span className="text-orange-500 font-bold text-lg">
-                    ${item.price.toFixed(2)}
+                    ₹{item.price.toFixed(2)}
                   </span>
                 </div>
 

@@ -34,7 +34,7 @@ function App() {
             <main className="pt-16">
               <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Overview />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/overview" element={<Overview />} />
@@ -43,6 +43,7 @@ function App() {
                 {/* Protected Customer Routes */}
                 <Route path="/menu" element={<ProtectedRoute> <Menu /> </ProtectedRoute>} />
                 <Route path="/qr-order/:tableId" element={<ProtectedRoute> <QROrdering /> </ProtectedRoute>} />
+                <Route path="/home" element={<Home />} />
 
                 <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                 <Route path="/reservations" element={<ProtectedRoute><Reservations /></ProtectedRoute>} />

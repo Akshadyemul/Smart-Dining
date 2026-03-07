@@ -112,7 +112,7 @@ export default function Cart() {
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg">{item.name}</h3>
                       <p className="text-orange-500 font-medium">
-                        ${item.price.toFixed(2)} each
+                        ₹{item.price.toFixed(2)} each
                       </p>
                     </div>
 
@@ -137,7 +137,7 @@ export default function Cart() {
                       {/* Item Total */}
                       <div className="text-right min-w-[80px]">
                         <p className="font-bold text-lg">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ₹{(item.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
 

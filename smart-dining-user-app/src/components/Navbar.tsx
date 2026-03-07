@@ -61,7 +61,7 @@ export default function Navbar() {
                 >
                   Home
                 </NavLink>
-                <NavLink
+                {/* <NavLink
                   to="/menu"
                   className={({ isActive }) =>
                     `font-medium transition-colors ${isActive
@@ -71,8 +71,8 @@ export default function Navbar() {
                   }
                 >
                   Menu
-                </NavLink>
-                <NavLink
+                </NavLink> */}
+                {/* <NavLink
                   to="/book-table"
                   className={({ isActive }) =>
                     `font-medium transition-colors ${isActive
@@ -82,7 +82,7 @@ export default function Navbar() {
                   }
                 >
                   Book Table
-                </NavLink>
+                </NavLink> */}
                 <NavLink
                   to="/reservations"
                   className={({ isActive }) =>

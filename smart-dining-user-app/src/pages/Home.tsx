@@ -35,38 +35,14 @@ export default function Home() {
     "Saat Rasta, Solapur"
   ];
 
-  const features = [
-    {
-      title: 'BOOK TABLE',
-      subtitle: 'Reserve your spot',
-      color: 'text-red-600',
-      action: () => navigate('/book-table'),
-      image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&q=80',
-    },
-    {
-      title: 'ORDER FOOD',
-      subtitle: 'From our kitchen',
-      color: 'text-orange-600',
-      action: () => navigate('/menu'),
-      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=80',
-    },
-    {
-      title: 'SMART SERVICES',
-      subtitle: 'QR & Tracking',
-      color: 'text-blue-600',
-      action: () => navigate('/overview'),
-      image: 'https://images.unsplash.com/photo-1556740758-90de374c12ad?w=500&q=80',
-    },
-  ];
-
-  const bestFood = [
-    { name: 'Biryani', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=200&fit=crop' },
-    { name: 'Pizza', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&h=200&fit=crop' },
-    { name: 'Burger', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop' },
-    { name: 'Rolls', image: 'https://images.unsplash.com/photo-1533777419517-3bf84dd3815b?w=200&h=200&fit=crop' },
-    { name: 'Cake', image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&h=200&fit=crop' },
-    { name: 'Ice Cream', image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=200&h=200&fit=crop' },
-  ];
+  // const bestFood = [
+  //   { name: 'Biryani', image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=200&fit=crop' },
+  //   { name: 'Pizza', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&h=200&fit=crop' },
+  //   { name: 'Burger', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop' },
+  //   { name: 'Rolls', image: 'https://images.unsplash.com/photo-1533777419517-3bf84dd3815b?w=200&h=200&fit=crop' },
+  //   { name: 'Cake', image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&h=200&fit=crop' },
+  //   { name: 'Ice Cream', image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=200&h=200&fit=crop' },
+  // ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,40 +105,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Feature Cards Section */}
-      <div className="bg-[#f2f6fccc] py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-3 gap-8 -mt-24 z-20 relative">
-            {features.map((feature, index) => (
-              <Card
-                key={index}
-                onClick={feature.action}
-                className="overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-300 shadow-xl border-none h-full group"
-              >
-                <CardContent className="p-0 h-full w-full relative">
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    className="w-full h-full object-cover block group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/60 to-transparent p-6 text-white pt-24">
-                    <h3 className="text-2xl font-black mb-1 tracking-tighter">{feature.title}</h3>
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-orange-200">{feature.subtitle}</span>
-                      <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-                        <MoveRight className="h-5 w-5" />
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Featured Restaurants Section */}
-      <div className="bg-white py-16">
+      <div className="bg-white py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
@@ -173,7 +117,7 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-8">
             {isLoading ? (
               [1, 2, 3].map(i => (
                 <div key={i} className="h-64 bg-gray-100 animate-pulse rounded-xl" />
@@ -224,7 +168,7 @@ export default function Home() {
       </div>
 
       {/* Best Food Section */}
-      <div className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* <div className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
           Order our best food options
         </h2>
@@ -244,7 +188,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

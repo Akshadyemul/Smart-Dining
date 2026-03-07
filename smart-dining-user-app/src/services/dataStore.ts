@@ -2,11 +2,18 @@ import type { User, Table, MenuItem, Reservation, Order, RestaurantProfile } fro
 import api from './axiosConfig';
 
 class DataStore {
+  private normalizeRestaurant(raw: any): RestaurantProfile {
+    return {
+      ...raw,
+      id: raw.id || raw._id,
+    } as RestaurantProfile;
+  }
+
   // Restaurants
   async getRestaurants(): Promise<RestaurantProfile[]> {
     try {
       const response = await api.get('/restaurant');
-      return response.data;
+      return (response.data || []).map((restaurant: any) => this.normalizeRestaurant(restaurant));
     } catch (error) {
       console.error('Error fetching restaurants:', error);
       return [];
@@ -16,7 +23,7 @@ class DataStore {
   async getRestaurantDetail(id: string): Promise<RestaurantProfile | null> {
     try {
       const response = await api.get(`/restaurant/${id}`);
-      return response.data;
+      return response.data ? this.normalizeRestaurant(response.data) : null;
     } catch (error) {
       console.error('Error fetching restaurant detail:', error);
       return null;

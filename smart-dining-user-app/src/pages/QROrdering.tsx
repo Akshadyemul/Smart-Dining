@@ -216,7 +216,7 @@ export default function QROrdering() {
                               <h4 className="font-semibold">{item.name}</h4>
                               <p className="text-sm text-gray-600 line-clamp-1">{item.description}</p>
                               <p className="text-orange-500 font-bold mt-1">
-                                ${item.price.toFixed(2)}
+                                ₹{item.price.toFixed(2)}
                               </p>
                             </div>
                           </div>

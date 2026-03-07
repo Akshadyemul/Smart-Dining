@@ -66,7 +66,7 @@ export default function Overview() {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">Experience Smart Dining</h1>
             <p className="text-xl md:text-2xl mb-8 text-orange-100">Book tables, order food, and track your dining experience.</p>
             <div className="flex justify-center gap-4">
-              <Link to="/login"><Button size="lg" className="bg-white text-orange-600">Get Started</Button></Link>
+              <Link to="/login"><Button size="lg" className="bg-white text-orange-600 hover:text-white hover:bg-orange-600">Get Started</Button></Link>
             </div>
           </div>
         </section>
@@ -106,7 +106,7 @@ export default function Overview() {
             <p className="text-gray-500">Here's what's happening with your dining today.</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" onClick={() => navigate('/')}>Find Restaurants</Button>
+            <Button variant="outline" onClick={() => navigate('/home')}>Find Restaurants</Button>
             <Button className="bg-[#fc8019] hover:bg-orange-600" onClick={() => navigate('/book-table')}>Book a Table</Button>
           </div>
         </div>
