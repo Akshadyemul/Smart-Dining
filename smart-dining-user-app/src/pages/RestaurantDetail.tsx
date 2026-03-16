@@ -22,7 +22,7 @@ export default function RestaurantDetail() {
     const [activeCategory, setActiveCategory] = useState<Category>('all');
     const [quantities, setQuantities] = useState<Record<string, number>>({});
     const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
-    const { addToCart } = useCart();
+    const { addToCart, setTableInfo } = useCart();
 
     // Booking state
     const [bookingDate, setBookingDate] = useState('');
@@ -142,6 +142,7 @@ export default function RestaurantDetail() {
 
         const success = await dataStore.addReservation(reservation);
         if (success) {
+            setTableInfo(selectedTable.id, selectedTable.tableNumber);
             toast.success('Table reserved successfully!');
             navigate('/reservations');
         } else {

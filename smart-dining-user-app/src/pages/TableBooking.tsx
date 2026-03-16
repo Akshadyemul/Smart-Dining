@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 import { dataStore } from '@/services/dataStore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +24,7 @@ import { toast } from 'sonner';
 
 export default function TableBooking() {
   const { user } = useAuth();
+  const { setTableInfo } = useCart();
   const navigate = useNavigate();
   const routeLocation = useLocation();
 
@@ -104,6 +106,7 @@ export default function TableBooking() {
     const savedReservation = await dataStore.addReservation(reservation);
 
     if (savedReservation) {
+      setTableInfo(selectedTable.id, selectedTable.tableNumber);
       toast.success('Table reserved successfully!');
       setShowConfirmation(true);
     } else {
