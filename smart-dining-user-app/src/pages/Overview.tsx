@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
 import { dataStore } from '@/services/dataStore';
-import type { Reservation, Order } from '@/types';
+import type { Reservation, Order, RestaurantProfile } from '@/types';
 import {
   Utensils,
   QrCode,
@@ -16,7 +16,8 @@ import {
   Star,
   Users,
   Loader2,
-  ChevronRight
+  ChevronRight,
+  MoveRight
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
@@ -25,6 +26,8 @@ export default function Overview() {
   const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [restaurants, setRestaurants] = useState<RestaurantProfile[]>([]);
+  const [location, setLocation] = useState("Bhavani Peth, Solapur");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -32,12 +35,14 @@ export default function Overview() {
       if (isAuthenticated) {
         setIsLoading(true);
         try {
-          const [resData, orderData] = await Promise.all([
+          const [resData, orderData, restaurantData] = await Promise.all([
             dataStore.getReservationsByUser(),
-            dataStore.getOrdersByUser()
+            dataStore.getOrdersByUser(),
+            dataStore.getRestaurants()
           ]);
           setReservations(resData.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()).slice(0, 3));
           setOrders(orderData.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()).slice(0, 3));
+          setRestaurants(restaurantData.slice(0, 3));
         } catch (error) {
           console.error('Error fetching dashboard data:', error);
         } finally {
@@ -100,16 +105,82 @@ export default function Overview() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-              <LayoutDashboard className="h-8 w-8 text-[#fc8019]" />
-              Welcome back, {user?.name}!
+              {/* <LayoutDashboard className="h-8 w-8 text-[#fc8019]" /> */}
+              Welcome, {user?.name}!
             </h1>
             <p className="text-gray-500">Here's what's happening with your dining today.</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" onClick={() => navigate('/home')}>Find Restaurants</Button>
+            {/* <Button variant="outline" onClick={() => navigate('/home')}>Find Restaurants</Button> */}
             <Button className="bg-[#fc8019] hover:bg-orange-600" onClick={() => navigate('/book-table')}>Book a Table</Button>
           </div>
         </div>
+
+
+
+        {/* Featured Restaurants Section */}
+        <div className="py-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                Popular Restaurants in {location.split(',')[0]}
+              </h2>
+              <Button variant="ghost" className="text-orange-500 font-bold">
+                See all <MoveRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+
+            <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-8">
+              {isLoading ? (
+                [1, 2, 3].map(i => (
+                  <div key={i} className="h-64 bg-gray-100 animate-pulse rounded-xl" />
+                ))
+              ) : restaurants.length > 0 ? (
+                restaurants.map((res) => (
+                  <Card
+                    key={res.id}
+                    className="overflow-hidden cursor-pointer hover:shadow-xl transition-shadow border-none bg-gray-50 group"
+                    onClick={() => navigate('/book-table', { state: { restaurantId: res.id } })}
+                  >
+                    <CardContent className="p-0">
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={res.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500'}
+                          alt={res.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-sm font-bold text-gray-900">
+                          {res.cuisineType}
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1">{res.name}</h3>
+                        <p className="text-gray-500 text-sm flex items-center mb-3">
+                          <span className="truncate">{res.address}</span>
+                        </p>
+                        <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                          <span className="text-sm font-medium text-orange-600 bg-orange-50 px-2 py-1 rounded">
+                            Open: {res.openingTime} - {res.closingTime}
+                          </span>
+                          <div className="flex items-center text-yellow-500">
+                            <span className="text-sm font-bold">4.5</span>
+                            <span className="text-xs text-gray-400 ml-1">(100+)</span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center text-gray-500">
+                  No restaurants found in this area yet.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+
 
         {isLoading ? (
           <div className="flex items-center justify-center py-20">

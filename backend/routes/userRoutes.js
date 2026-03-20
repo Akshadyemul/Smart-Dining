@@ -45,6 +45,31 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.get('/phone/:phone', async (req, res) => {
+    try {
+        const user = await User.findOne({ phone: req.params.phone }).populate('restaurantId');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        
+        // Return user with MongoDB ID field
+        const userResponse = {
+            id: user._id,
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            isRestaurantOwner: user.isRestaurantOwner,
+            restaurantId: user.restaurantId,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        };
+        
+        res.json(userResponse);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 router.post('/register', async (req, res) => {
     try {
         const { email, phone } = req.body;

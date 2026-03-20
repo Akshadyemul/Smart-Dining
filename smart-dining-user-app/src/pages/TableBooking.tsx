@@ -99,7 +99,9 @@ export default function TableBooking() {
       date: selectedDate,
       time: selectedTime,
       guests,
-      status: 'confirmed',
+      status: 'pending',
+      userName: user!.name,
+      userPhone: user!.phone,
       specialRequests: specialRequests || undefined,
     };
 
@@ -107,7 +109,7 @@ export default function TableBooking() {
 
     if (savedReservation) {
       setTableInfo(selectedTable.id, selectedTable.tableNumber);
-      toast.success('Table reserved successfully!');
+      toast.success('Table reservation request sent successfully!');
       setShowConfirmation(true);
     } else {
       toast.error('Failed to reserve table. Please try again.');
@@ -133,9 +135,9 @@ export default function TableBooking() {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="h-8 w-8 text-green-500" />
               </div>
-              <h2 className="text-2xl font-bold mb-2">Reservation Confirmed!</h2>
+              <h2 className="text-2xl font-bold mb-2">Reservation Requested!</h2>
               <p className="text-gray-600 mb-6">
-                Your table has been reserved successfully.
+                Your table reservation request has been sent to the restaurant.
               </p>
               <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
                 <p className="mb-2"><strong>Restaurant:</strong> {restaurants.find(r => r.id === selectedRestaurantId)?.name}</p>

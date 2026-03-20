@@ -4,7 +4,6 @@ import { CartProvider } from '@/context/CartContext';
 import { Toaster } from '@/components/ui/sonner';
 
 // Pages
-import Home from '@/pages/Home';
 import Login from '@/auth/Login';
 import Register from '@/auth/Register';
 import Menu from '@/pages/Menu';
@@ -16,7 +15,6 @@ import QROrdering from '@/pages/QROrdering';
 import Payment from '@/pages/Payment';
 import OrderSuccess from '@/pages/OrderSuccess';
 import Overview from '@/pages/Overview';
-import RestaurantDetail from '@/pages/RestaurantDetail';
 
 
 // Components
@@ -38,12 +36,10 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/overview" element={<Overview />} />
-                <Route path="/restaurant/:id" element={<ProtectedRoute> <RestaurantDetail /> </ProtectedRoute>} />
 
                 {/* Protected Customer Routes */}
                 <Route path="/menu" element={<ProtectedRoute> <Menu /> </ProtectedRoute>} />
                 <Route path="/qr-order/:tableId" element={<ProtectedRoute> <QROrdering /> </ProtectedRoute>} />
-                <Route path="/home" element={<Home />} />
 
                 <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                 <Route path="/reservations" element={<ProtectedRoute><Reservations /></ProtectedRoute>} />

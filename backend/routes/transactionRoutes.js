@@ -34,6 +34,25 @@ router.get('/orders', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
+router.get('/orders/:id', async (req, res) => {
+    try {
+        const userId = req.headers['x-user-id'];
+        if (!userId) return res.status(401).json({ message: 'User ID required' });
+        
+        const ownerRestaurantId = await getOwnerRestaurantId(userId);
+        const filter = ownerRestaurantId
+            ? { id: req.params.id, restaurantId: ownerRestaurantId }
+            : { id: req.params.id, userId };
+            
+        const order = await Order.findOne(filter);
+        if (!order) return res.status(404).json({ message: 'Order not found' });
+        
+        res.json(order);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 router.post('/orders', async (req, res) => {
     try {
         const userId = req.headers['x-user-id'];

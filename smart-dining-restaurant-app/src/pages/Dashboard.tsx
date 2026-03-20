@@ -8,7 +8,6 @@ import {
   ShoppingBag,
   Calendar,
   TrendingUp,
-  DollarSign,
   ArrowRight,
   IndianRupee
 } from 'lucide-react';
@@ -56,7 +55,8 @@ export default function AdminDashboard() {
       setRecentOrders(orders.slice(-5).reverse());
       setUpcomingReservations(
         reservations
-          .filter(r => r.date >= today && r.status === 'confirmed')
+          .filter(r => r.date >= today && (r.status === 'confirmed' || r.status === 'pending'))
+          .sort((a, b) => new Date(a.date + ' ' + a.time).getTime() - new Date(b.date + ' ' + b.time).getTime())
           .slice(0, 5)
       );
     };
@@ -253,11 +253,18 @@ export default function AdminDashboard() {
                         <div>
                           <p className="font-bold text-gray-900">{reservation.time}</p>
                           <p className="text-sm text-gray-500">{reservation.guests} guests • Table {getTableNumber(reservation.tableId)}</p>
+                          <p className="text-sm font-medium mt-1 text-gray-700">
+                            {reservation.userName || 'Unknown User'} • {reservation.userPhone || 'No Phone'}
+                          </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
-                          Confirmed
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold capitalize ${
+                          reservation.status === 'confirmed' 
+                            ? 'bg-green-100 text-green-700' 
+                            : 'bg-yellow-100 text-yellow-700'
+                        }`}>
+                          {reservation.status}
                         </span>
                       </div>
                     </div>

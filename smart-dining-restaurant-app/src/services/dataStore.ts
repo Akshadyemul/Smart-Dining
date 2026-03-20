@@ -114,6 +114,14 @@ export const dataStore = {
     }
   },
   // Users
+  async getNormalUserById(id: string): Promise<User | undefined> {
+    try {
+      const response = await api.get(`/users/${id}`);
+      return response.data;
+    } catch (error) {
+      return undefined;
+    }
+  },
   async getUserById(id: string): Promise<User | undefined> {
     try {
       const response = await api.get(`/restaurant-owners/${id}`);

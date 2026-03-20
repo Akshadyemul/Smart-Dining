@@ -40,6 +40,8 @@ export interface Reservation {
   time: string;
   guests: number;
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  userName?: string;
+  userPhone?: string;
   preOrderItems?: OrderItem[];
   specialRequests?: string;
   createdAt: string;
