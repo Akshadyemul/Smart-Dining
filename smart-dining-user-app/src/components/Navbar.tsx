@@ -226,6 +226,18 @@ export default function Navbar() {
               {user && (
                 <>
                   <NavLink
+                    to="/profile"
+                    className={({ isActive }) =>
+                      `px-4 py-2 rounded ${isActive
+                        ? "text-orange-500 underline underline-offset-4"
+                        : "text-gray-700 hover:bg-gray-100"
+                      }`
+                    }
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Profile
+                  </NavLink>
+                  <NavLink
                     to="/book-table"
                     className={({ isActive }) =>
                       `px-4 py-2 rounded ${isActive

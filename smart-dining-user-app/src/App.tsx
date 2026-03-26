@@ -15,6 +15,7 @@ import QROrdering from '@/pages/QROrdering';
 import Payment from '@/pages/Payment';
 import OrderSuccess from '@/pages/OrderSuccess';
 import Overview from '@/pages/Overview';
+import Profile from '@/pages/Profile';
 
 
 // Components
@@ -40,6 +41,7 @@ function App() {
                 {/* Protected Customer Routes */}
                 <Route path="/menu" element={<ProtectedRoute> <Menu /> </ProtectedRoute>} />
                 <Route path="/qr-order/:tableId" element={<ProtectedRoute> <QROrdering /> </ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
                 <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                 <Route path="/reservations" element={<ProtectedRoute><Reservations /></ProtectedRoute>} />
