@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { CartItem, Order } from '@/types';
 import { dataStore } from '@/services/dataStore';
+import { toast } from 'sonner';
 import { useAuth } from './AuthContext';
 
 interface CartContextType {
@@ -50,6 +51,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addToCart = (item: CartItem) => {
     setCartItems(prev => {
+      if (prev.length > 0) {
+        const existingRestaurantId = prev[0].restaurantId;
+        if (item.restaurantId && existingRestaurantId && item.restaurantId !== existingRestaurantId) {
+          toast.error("You can only order from one restaurant at a time. Please clear your cart first.");
+          return prev;
+        }
+      }
+
       const existingItem = prev.find(i => i.menuItemId === item.menuItemId);
       if (existingItem) {
         return prev.map(i =>
@@ -102,6 +111,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const order: Partial<Order> = {
       id: `order-${Date.now()}`,
       userId: user?.id,
+      restaurantId: cartItems[0]?.restaurantId || '',
       tableId,
       tableNumber: tableNumber!,
       items: [...cartItems],

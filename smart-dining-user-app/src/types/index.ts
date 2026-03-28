@@ -27,6 +27,7 @@ export interface MenuItem {
   category: 'appetizer' | 'main' | 'dessert' | 'beverage';
   image: string;
   isAvailable: boolean;
+  restaurantId?: string;
 }
 
 // Reservation Types
@@ -53,6 +54,7 @@ export interface OrderItem {
   name: string;
   price: number;
   quantity: number;
+  restaurantId?: string;
 }
 
 export interface Order {

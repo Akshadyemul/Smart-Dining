@@ -8,12 +8,12 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import {
-  CreditCard,
   Banknote,
   Check,
+  MapPin,
+  QrCode,
   Loader2,
-  ArrowLeft,
-  MapPin
+  ArrowLeft
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Order } from '@/types';
@@ -103,8 +103,8 @@ export default function Payment() {
 
               <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
                 <p className="mb-2"><strong>Order ID:</strong> #{order.id.slice(-6).toUpperCase()}</p>
-                <p className="mb-2"><strong>Amount Paid:</strong> ${order.totalAmount.toFixed(2)}</p>
-                <p className="mb-2"><strong>Payment Method:</strong> {paymentMethod === 'online' ? 'Online Payment' : 'Cash'}</p>
+                <p className="mb-2"><strong>Amount Paid:</strong> ₹{order.totalAmount.toFixed(2)}</p>
+                <p className="mb-2"><strong>Payment Method:</strong> {paymentMethod === 'online' ? 'UPI QR Payment' : 'Pay at Counter'}</p>
                 <p><strong>Table:</strong> {order.tableNumber}</p>
               </div>
 
@@ -163,11 +163,11 @@ export default function Payment() {
                     <RadioGroupItem value="online" id="online" />
                     <Label htmlFor="online" className="flex items-center cursor-pointer flex-1">
                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                        <CreditCard className="h-6 w-6 text-blue-600" />
+                        <QrCode className="h-6 w-6 text-blue-600" />
                       </div>
                       <div>
-                        <p className="font-semibold">Online Payment</p>
-                        <p className="text-sm text-gray-600">Pay securely with credit/debit card</p>
+                        <p className="font-semibold">UPI QR Payment</p>
+                        <p className="text-sm text-gray-600">Scan QR to pay with any UPI app</p>
                       </div>
                     </Label>
                   </div>
@@ -176,44 +176,32 @@ export default function Payment() {
                     }`}>
                     <RadioGroupItem value="cash" id="cash" />
                     <Label htmlFor="cash" className="flex items-center cursor-pointer flex-1">
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                        <Banknote className="h-6 w-6 text-green-600" />
+                      <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+                        <Banknote className="h-6 w-6 text-yellow-600" />
                       </div>
                       <div>
-                        <p className="font-semibold">Cash on Delivery</p>
-                        <p className="text-sm text-gray-600">Pay with cash when your order arrives</p>
+                        <p className="font-semibold text-orange-600">Pay at Counter</p>
+                        <p className="text-sm text-gray-700">Food will <span className="font-bold">NOT</span> be prepared until you check-in at the restaurant.</p>
                       </div>
                     </Label>
                   </div>
                 </RadioGroup>
 
                 {paymentMethod === 'online' && (
-                  <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                    <p className="font-medium mb-4">Card Details (Demo)</p>
-                    <div className="space-y-4">
-                      <div>
-                        <Label className="text-sm text-gray-600">Card Number</Label>
-                        <div className="p-3 bg-white border rounded-lg font-mono">
-                          **** **** **** 4242
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label className="text-sm text-gray-600">Expiry</Label>
-                          <div className="p-3 bg-white border rounded-lg font-mono">
-                            12/25
-                          </div>
-                        </div>
-                        <div>
-                          <Label className="text-sm text-gray-600">CVV</Label>
-                          <div className="p-3 bg-white border rounded-lg font-mono">
-                            ***
-                          </div>
-                        </div>
-                      </div>
+                  <div className="mt-6 p-4 bg-gray-50 rounded-lg text-center">
+                    <p className="font-medium mb-4 text-gray-800">Scan to Pay ₹{total.toFixed(2)}</p>
+                    <div className="bg-white p-4 inline-block rounded-xl border-2 border-dashed border-gray-200 mb-4">
+                      <img 
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=restaurant@upi&pn=SmartDining&am=${total.toFixed(2)}`} 
+                        alt="UPI QR Code" 
+                        className="w-48 h-48 mx-auto" 
+                      />
                     </div>
-                    <p className="text-xs text-gray-500 mt-4">
-                      * This is a demo. No actual payment will be processed.
+                    <p className="text-sm text-gray-600">
+                      Open Google Pay, PhonePe, or Paytm and scan this QR code
+                    </p>
+                    <p className="text-xs text-gray-400 mt-4">
+                      * This is a demo QR code. Processing bypasses real payment gateways.
                     </p>
                   </div>
                 )}
@@ -246,16 +234,16 @@ export default function Payment() {
 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">₹{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax (8%)</span>
-                  <span className="font-medium">${tax.toFixed(2)}</span>
+                  <span className="font-medium">₹{tax.toFixed(2)}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between text-lg font-bold">
                   <span>Total</span>
-                  <span className="text-orange-500">${total.toFixed(2)}</span>
+                  <span className="text-orange-500">₹{total.toFixed(2)}</span>
                 </div>
 
                 <Button
@@ -271,8 +259,8 @@ export default function Payment() {
                     </>
                   ) : (
                     <>
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      Pay ${total.toFixed(2)}
+                      {paymentMethod === 'online' ? <QrCode className="mr-2 h-4 w-4" /> : <Banknote className="mr-2 h-4 w-4" />}
+                      Complete Order
                     </>
                   )}
                 </Button>

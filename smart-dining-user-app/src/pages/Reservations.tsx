@@ -11,7 +11,8 @@ import {
   MapPin,
   ArrowRight,
   CalendarX,
-  Loader2
+  Loader2,
+  Utensils
 } from 'lucide-react';
 import type { Reservation } from '@/types';
 import { toast } from 'sonner';
@@ -168,6 +169,15 @@ export default function Reservations() {
 
                     {isUpcoming && (
                       <div className="flex md:flex-col gap-2">
+                        {reservation.status === 'confirmed' && (
+                          <Button 
+                            className="bg-orange-500 hover:bg-orange-600 flex-1 md:flex-none"
+                            onClick={() => navigate(reservation.tableId ? `/qr-order/${reservation.tableId}` : '/menu')}
+                          >
+                            <Utensils className="mr-2 h-4 w-4" />
+                            Pre-Order Food
+                          </Button>
+                        )}
                         <Button
                           variant="outline"
                           size="sm"

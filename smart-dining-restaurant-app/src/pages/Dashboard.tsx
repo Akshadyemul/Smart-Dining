@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { dataStore } from '@/services/dataStore';
 import type { Order, Reservation, Table } from '@/types';
+import { toast } from 'sonner';
+import { useRef } from 'react';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -26,8 +28,9 @@ export default function AdminDashboard() {
   });
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [upcomingReservations, setUpcomingReservations] = useState<Reservation[]>([]);
-
   const [tables, setTables] = useState<Table[]>([]);
+  const prevOrdersCount = useRef<number>(-1);
+  const prevResCount = useRef<number>(-1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +40,20 @@ export default function AdminDashboard() {
         dataStore.getMenuItems(),
         dataStore.getTables()
       ]);
+
+      if (prevOrdersCount.current !== -1 && orders.length > prevOrdersCount.current) {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        audio.play().catch(() => {});
+        toast.success('🛎️ New Order Received!', { style: { backgroundColor: '#f97316', color: 'white', border: 'none' } });
+      }
+      prevOrdersCount.current = orders.length;
+
+      if (prevResCount.current !== -1 && reservations.length > prevResCount.current) {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        audio.play().catch(() => {});
+        toast.success('📅 New Reservation Received!', { style: { backgroundColor: '#8b5cf6', color: 'white', border: 'none' } });
+      }
+      prevResCount.current = reservations.length;
 
       setTables(allTables);
 
@@ -62,6 +79,8 @@ export default function AdminDashboard() {
     };
 
     fetchData();
+    const interval = setInterval(fetchData, 2000);
+    return () => clearInterval(interval);
   }, []);
 
   const getTableNumber = (tableId: string) => {
@@ -211,7 +230,7 @@ export default function AdminDashboard() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-orange-600 text-lg">${order.totalAmount.toFixed(2)}</p>
+                        <p className="font-bold text-orange-600 text-lg">₹{order.totalAmount.toFixed(2)}</p>
                         <p className="text-xs font-medium text-gray-500 capitalize px-2 py-1 bg-gray-50 rounded-lg inline-block mt-1">
                           {order.status}
                         </p>

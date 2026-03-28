@@ -16,6 +16,10 @@ import Payment from '@/pages/Payment';
 import OrderSuccess from '@/pages/OrderSuccess';
 import Overview from '@/pages/Overview';
 import Profile from '@/pages/Profile';
+import Settings from '@/pages/Settings';
+import QRScanner from '@/pages/QRScanner';
+import AllRestaurants from '@/pages/AllRestaurants';
+import OrderDetail from '@/pages/OrderDetail';
 
 
 // Components
@@ -42,6 +46,9 @@ function App() {
                 <Route path="/menu" element={<ProtectedRoute> <Menu /> </ProtectedRoute>} />
                 <Route path="/qr-order/:tableId" element={<ProtectedRoute> <QROrdering /> </ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                <Route path="/scan" element={<ProtectedRoute><QRScanner /></ProtectedRoute>} />
+                <Route path="/restaurants" element={<ProtectedRoute><AllRestaurants /></ProtectedRoute>} />
 
                 <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                 <Route path="/reservations" element={<ProtectedRoute><Reservations /></ProtectedRoute>} />
@@ -49,6 +56,7 @@ function App() {
                 <Route path="/book-table" element={<ProtectedRoute><TableBooking /></ProtectedRoute>} />
                 <Route path="/payment/:orderId" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
                 <Route path="/order-success/:orderId" element={<ProtectedRoute><OrderSuccess /></ProtectedRoute>} />
+                <Route path="/order/:orderId" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
 
 
 

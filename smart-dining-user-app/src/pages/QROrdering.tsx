@@ -16,7 +16,7 @@ import {
   Info,
   Loader2
 } from 'lucide-react';
-import type { MenuItem } from '@/types';
+import type { MenuItem, RestaurantProfile } from '@/types';
 import { toast } from 'sonner';
 
 export default function QROrdering() {
@@ -34,11 +34,26 @@ export default function QROrdering() {
     const fetchData = async () => {
       if (tableId) {
         setIsLoading(true);
-        const foundTable = await dataStore.getTableById(tableId);
-        if (foundTable) {
+        let targetRestaurant: RestaurantProfile | null = null;
+        let foundTable = null;
+
+        const restaurants = await dataStore.getRestaurants();
+        for (const res of restaurants) {
+          const detail = await dataStore.getRestaurantDetail(res.id);
+          const table = detail?.tables.find(t => t.id === tableId);
+          if (table) {
+            foundTable = table;
+            targetRestaurant = detail;
+            break;
+          }
+        }
+
+        if (foundTable && targetRestaurant) {
           setTable(foundTable);
           setTableInfo(foundTable.id, foundTable.tableNumber);
-          const items = await dataStore.getMenuItems();
+          
+          const restaurantId = targetRestaurant.id;
+          const items = (targetRestaurant.menu || []).map(i => ({ ...i, restaurantId }));
           setMenuItems(items.filter(item => item.isAvailable));
         } else {
           setIsValidTable(false);

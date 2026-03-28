@@ -16,6 +16,7 @@ import {
   Loader2
 } from 'lucide-react';
 import type { Order } from '@/types';
+import { toast } from 'sonner';
 
 export default function MyOrders() {
   const navigate = useNavigate();
@@ -23,15 +24,48 @@ export default function MyOrders() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isInitialLoad = true;
+    let prevOrdersRef: Order[] = [];
+
     const fetchOrders = async () => {
-      setIsLoading(true);
+      if (isInitialLoad) setIsLoading(true);
       const userOrders = await dataStore.getOrdersByUser();
-      setOrders(userOrders.sort((a, b) =>
+      const sortedOrders = userOrders.sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      ));
-      setIsLoading(false);
+      );
+
+      if (!isInitialLoad) {
+        sortedOrders.forEach(newOrder => {
+          const oldOrder = prevOrdersRef.find(o => o.id === newOrder.id);
+          if (oldOrder && oldOrder.status !== newOrder.status) {
+            if (newOrder.status === 'ready' || newOrder.status === 'served') {
+               toast.success(`🍽️ Order #${newOrder.id.slice(-6).toUpperCase()} is now ${newOrder.status.toUpperCase()}!`, {
+                 style: { backgroundColor: '#22c55e', color: 'white', border: 'none' },
+                 duration: 6000
+               });
+            } else {
+               toast.info(`Order #${newOrder.id.slice(-6).toUpperCase()} status updated to ${newOrder.status}`);
+            }
+          }
+        });
+      }
+
+      setOrders(sortedOrders);
+      prevOrdersRef = sortedOrders;
+      
+      if (isInitialLoad) {
+        setIsLoading(false);
+        isInitialLoad = false;
+      }
     };
+
     fetchOrders();
+
+    const interval = setInterval(() => {
+      fetchOrders();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const getStatusIcon = (status: string) => {
@@ -165,7 +199,8 @@ export default function MyOrders() {
                   <div>
                     <p className="text-sm text-gray-500">Total Amount</p>
                     <p className="text-xl font-bold text-orange-500">
-                      ${order.totalAmount.toFixed(2)}
+                      
+₹{order.totalAmount.toFixed(2)}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -179,7 +214,7 @@ export default function MyOrders() {
                     )}
                     <Button
                       variant="outline"
-                      onClick={() => navigate(`/payment/${order.id}`)}
+                      onClick={() => navigate(`/order/${order.id}`)}
                     >
                       View Details
                       <ChevronRight className="ml-2 h-4 w-4" />

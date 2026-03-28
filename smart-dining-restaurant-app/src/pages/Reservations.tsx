@@ -18,6 +18,7 @@ import {
 import { dataStore } from '@/services/dataStore';
 import type { Reservation, Table, User } from '@/types';
 import { toast } from 'sonner';
+import { useRef } from 'react';
 
 export default function AdminReservations() {
   const navigate = useNavigate();
@@ -26,17 +27,29 @@ export default function AdminReservations() {
   const [filter, setFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [userCache, setUserCache] = useState<Record<string, User>>({});
+  const prevCountRef = useRef<number>(-1);
 
   useEffect(() => {
+    let isInitialLoad = true;
     const fetchData = async () => {
-      setIsLoading(true);
+      if (isInitialLoad) setIsLoading(true);
       const [resData, tableData] = await Promise.all([
         dataStore.getReservations(),
         dataStore.getTables()
       ]);
-      setReservations(resData.sort((a, b) =>
+      const sortedData = resData.sort((a, b) =>
         new Date(b.date + ' ' + b.time).getTime() - new Date(a.date + ' ' + a.time).getTime()
-      ));
+      );
+      
+      if (prevCountRef.current !== -1 && sortedData.length > prevCountRef.current) {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        audio.play().catch(e => console.warn('Audio play blocked by browser:', e));
+        toast.success('📅 New Reservation Received!', {
+          style: { backgroundColor: '#8b5cf6', color: 'white', border: 'none' }
+        });
+      }
+      prevCountRef.current = sortedData.length;
+      setReservations(sortedData);
       setTables(tableData);
 
       // Fetch missing user details
@@ -50,9 +63,19 @@ export default function AdminReservations() {
         setUserCache(prev => ({ ...prev, ...newCache }));
       }
 
-      setIsLoading(false);
+      if (isInitialLoad) {
+        setIsLoading(false);
+        isInitialLoad = false;
+      }
     };
-    fetchData();
+    
+    fetchData(); // Initial run
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 2000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const getTableNumber = (tableId: string) => {

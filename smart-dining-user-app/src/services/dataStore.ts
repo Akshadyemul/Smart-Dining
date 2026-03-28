@@ -36,8 +36,9 @@ class DataStore {
       const restaurants = await api.get('/restaurant');
       const allMenus = await Promise.all(
         restaurants.data.map(async (r: any) => {
-          const detail = await this.getRestaurantDetail(r._id || r.id);
-          return detail?.menu || [];
+          const resId = r._id || r.id;
+          const detail = await this.getRestaurantDetail(resId);
+          return (detail?.menu || []).map(item => ({ ...item, restaurantId: resId }));
         })
       );
       return allMenus.flat();

@@ -14,6 +14,7 @@ import AdminMenu from '@/pages/Menu';
 import AdminOrders from '@/pages/Orders';
 import AdminReservations from '@/pages/Reservations';
 import Profile from '@/pages/Profile';
+import Settings from '@/pages/Settings';
 
 // Components
 import Navbar from '@/components/Navbar';
@@ -41,6 +42,7 @@ function App() {
               <Route path="/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
               <Route path="/reservations" element={<ProtectedRoute><AdminReservations /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
               {/* Redirects */}
               <Route path="*" element={<Navigate to="/" replace />} />

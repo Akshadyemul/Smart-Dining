@@ -635,7 +635,7 @@ export default function RegisterRestaurant() {
                                                 <img src={item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100'} className="w-12 h-12 rounded object-cover" />
                                                 <div className="flex-1 min-w-0">
                                                     <p className="font-medium truncate">{item.name}</p>
-                                                    <p className="text-sm text-gray-500">${item.price}</p>
+                                                    <p className="text-sm text-gray-500">₹{item.price}</p>
                                                 </div>
                                                 <button onClick={() => removeMenuItem(item.id)} className="text-red-500">
                                                     <Trash2 className="h-4 w-4" />

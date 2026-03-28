@@ -4,8 +4,9 @@ import { dataStore } from '@/services/dataStore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Minus, ShoppingCart, Check, Loader2 } from 'lucide-react';
+import { Plus, Minus, ShoppingCart, Check, Loader2, Info } from 'lucide-react';
 import type { MenuItem, Category } from '@/types';
 import { toast } from 'sonner';
 
@@ -15,7 +16,7 @@ export default function Menu() {
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { addToCart } = useCart();
+  const { addToCart, tableId } = useCart();
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -93,9 +94,18 @@ export default function Menu() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Our Menu
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
             Discover our delicious selection of dishes prepared by expert chefs
           </p>
+          
+          {!tableId && (
+            <Alert className="max-w-2xl mx-auto bg-blue-50 border-blue-200">
+              <Info className="h-4 w-4 text-blue-500" />
+              <AlertDescription className="text-blue-800 text-left">
+                Please <a href="/book-table" className="underline font-bold hover:text-blue-600">book a table</a> or scan a QR code at the restaurant to place an order. You can still browse our global menu!
+              </AlertDescription>
+            </Alert>
+          )}
         </div>
 
         {/* Category Tabs */}

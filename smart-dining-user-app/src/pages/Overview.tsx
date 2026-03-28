@@ -10,11 +10,8 @@ import {
   QrCode,
   Calendar,
   Clock,
-  LayoutDashboard,
   ChefHat,
   ArrowRight,
-  Star,
-  Users,
   Loader2,
   ChevronRight,
   MoveRight
@@ -27,7 +24,7 @@ export default function Overview() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [restaurants, setRestaurants] = useState<RestaurantProfile[]>([]);
-  const [location, setLocation] = useState("Bhavani Peth, Solapur");
+  const [location] = useState("Bhavani Peth, Solapur");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -122,10 +119,10 @@ export default function Overview() {
         <div className="py-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                Popular Restaurants in {location.split(',')[0]}
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 pr-2">
+                Popular Restaurants <span className="hidden sm:inline">in {location.split(',')[0]}</span>
               </h2>
-              <Button variant="ghost" className="text-orange-500 font-bold">
+              <Button variant="ghost" className="text-orange-500 font-bold" onClick={() => navigate('/restaurants')}>
                 See all <MoveRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
@@ -283,9 +280,8 @@ export default function Overview() {
                 <CardContent className="p-0">
                   <div className="divide-y divide-gray-100">
                     {[
-                      { icon: <QrCode className="h-5 w-5" />, label: 'Scan QR to Order', path: '/menu' },
-                      { icon: <Star className="h-5 w-5" />, label: 'Rate Last Experience', path: '/' },
-                      { icon: <Users className="h-5 w-5" />, label: 'Invite Friends', path: '/' },
+                      { icon: <QrCode className="h-5 w-5" />, label: 'Scan Table QR', path: '/scan' },
+                      { icon: <Utensils className="h-5 w-5" />, label: 'Browse Global Menu', path: '/menu' },
                     ].map((item, i) => (
                       <button
                         key={i}

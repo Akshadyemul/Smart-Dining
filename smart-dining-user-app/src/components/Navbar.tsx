@@ -18,6 +18,7 @@ import {
   ChevronDown,
   Menu as MenuIcon,
   X,
+  QrCode
 } from "lucide-react";
 import { useState } from "react";
 
@@ -61,7 +62,7 @@ export default function Navbar() {
                 >
                   Home
                 </NavLink>
-                {/* <NavLink
+                <NavLink
                   to="/menu"
                   className={({ isActive }) =>
                     `font-medium transition-colors ${isActive
@@ -71,8 +72,8 @@ export default function Navbar() {
                   }
                 >
                   Menu
-                </NavLink> */}
-                {/* <NavLink
+                </NavLink>
+                <NavLink
                   to="/book-table"
                   className={({ isActive }) =>
                     `font-medium transition-colors ${isActive
@@ -82,7 +83,7 @@ export default function Navbar() {
                   }
                 >
                   Book Table
-                </NavLink> */}
+                </NavLink>
                 <NavLink
                   to="/reservations"
                   className={({ isActive }) =>
@@ -115,6 +116,11 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <>
+                <Button variant="ghost" className="hidden lg:flex items-center space-x-2 text-gray-700 hover:text-orange-500 hover:bg-orange-50" onClick={() => navigate("/scan")}>
+                  <QrCode className="h-5 w-5" />
+                  <span>Scan QR</span>
+                </Button>
+
                 <Link to="/cart" className="relative">
                   <Button variant="ghost" size="icon" className="relative">
                     <ShoppingCart className="h-5 w-5" />
@@ -152,6 +158,10 @@ export default function Navbar() {
                     <DropdownMenuItem onClick={() => navigate("/reservations")}>
                       <Calendar className="mr-2 h-4 w-4" />
                       Reservations
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/settings")}>
+                      <User className="mr-2 h-4 w-4 opacity-0" /> {/* Spacer or custom icon */}
+                      <span className="flex-1">Settings</span>
                     </DropdownMenuItem>
 
 
@@ -212,6 +222,19 @@ export default function Navbar() {
                 Home
               </NavLink>
               <NavLink
+                to="/scan"
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded flex items-center ${isActive
+                    ? "text-orange-500 underline underline-offset-4"
+                    : "text-gray-700 hover:bg-gray-100"
+                  }`
+                }
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <QrCode className="h-4 w-4 mr-2" />
+                Scan Table QR
+              </NavLink>
+              <NavLink
                 to="/menu"
                 className={({ isActive }) =>
                   `px-4 py-2 rounded ${isActive
@@ -236,6 +259,18 @@ export default function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Profile
+                  </NavLink>
+                  <NavLink
+                    to="/settings"
+                    className={({ isActive }) =>
+                      `px-4 py-2 rounded ${isActive
+                        ? "text-orange-500 underline underline-offset-4"
+                        : "text-gray-700 hover:bg-gray-100"
+                      }`
+                    }
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Settings
                   </NavLink>
                   <NavLink
                     to="/book-table"

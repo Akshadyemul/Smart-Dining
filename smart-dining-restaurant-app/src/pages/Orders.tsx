@@ -17,18 +17,40 @@ import {
 import { dataStore } from '@/services/dataStore';
 import type { Order } from '@/types';
 import { toast } from 'sonner';
+import { useRef } from 'react';
+
 export default function AdminOrders() {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [filter, setFilter] = useState<string>('all');
+  const prevCountRef = useRef<number>(-1);
+
   useEffect(() => {
     const fetchOrders = async () => {
       const data = await dataStore.getOrders();
-      setOrders(data.sort((a, b) =>
+      const sortedData = data.sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      ));
+      );
+      
+      if (prevCountRef.current !== -1 && sortedData.length > prevCountRef.current) {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        audio.play().catch(e => console.warn('Audio play blocked by browser:', e));
+        toast.success('🛎️ New Order Received!', {
+          style: { backgroundColor: '#f97316', color: 'white', border: 'none' }
+        });
+      }
+      prevCountRef.current = sortedData.length;
+      setOrders(sortedData);
     };
-    fetchOrders();
+    
+    fetchOrders(); // Initial fetch
+    
+    // Poll every 2 seconds for real-time feel
+    const interval = setInterval(() => {
+      fetchOrders();
+    }, 2000);
+    
+    return () => clearInterval(interval);
   }, []);
   const filteredOrders = filter === 'all'
     ? orders
@@ -168,6 +190,11 @@ export default function AdminOrders() {
                       <span className="font-semibold">Order #{order.id.slice(-6).toUpperCase()}</span>
                       {getStatusBadge(order.status)}
                       {getPaymentStatusBadge(order.paymentStatus)}
+                      {order.paymentMethod === 'cash' && order.status === 'pending' && (
+                        <Badge variant="destructive" className="bg-red-500 animate-pulse text-white font-bold ml-2">
+                          Wait For Check-In
+                        </Badge>
+                      )}
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
@@ -201,10 +228,13 @@ export default function AdminOrders() {
                       <Button
                         size="sm"
                         onClick={() => updateOrderStatus(order, 'preparing')}
-                        className="bg-orange-500 hover:bg-orange-600"
+                        className={order.paymentMethod === 'cash' ? "bg-red-500 hover:bg-red-600 font-bold" : "bg-orange-500 hover:bg-orange-600"}
                       >
-                        <ChefHat className="mr-2 h-4 w-4" />
-                        Start Preparing
+                        {order.paymentMethod === 'cash' ? (
+                          <><CheckCircle className="mr-2 h-4 w-4" /> Confirm Arrival & Prep</>
+                        ) : (
+                          <><ChefHat className="mr-2 h-4 w-4" /> Start Preparing</>
+                        )}
                       </Button>
                     )}
                     {order.status === 'preparing' && (
