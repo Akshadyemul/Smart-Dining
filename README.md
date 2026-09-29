@@ -2,7 +2,7 @@
 
 A full-stack **Smart Dining platform** that enables **table reservations, QR-based ordering, and restaurant management**.
 
-> This project is **open-source and learning-focused**. It was built with the help of AI tools, and I primarily worked on the **frontend (React + TypeScript + Tailwind CSS)**. Feel free to fork and improve it.
+> This project is **open-source and learning-focused**. This is a project of 4 member group, and I primarily worked on the **frontend (React + TypeScript + Tailwind CSS)**. Feel free to fork and improve it.
 
 ---
 
